@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Helping Hands - House Help Services</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 0;
+            background: #f2f2f2;
+        }
+
+        nav {
+            background: #8e44ad;
+            padding: 15px;
+            text-align: center;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+            margin-top: 30px;
+        }
+
+        .box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px gray;
+            margin-bottom: 30px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+        }
+
+        button {
+            background: #8e44ad;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 0 5px gray;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #8e44ad;
+            color: white;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<nav>Helping Hands - House Help Women</nav>
+
+<div class="container">
+
+    <!-- Register Section -->
+    <div class="box">
+        <h2>Register as House Helper</h2>
+
+        <input type="text" id="name" placeholder="Enter Name">
+        <input type="text" id="city" placeholder="Enter City">
+
+        <select id="service">
+            <option value="House Maid">House Maid</option>
+            <option value="Cook">Cook</option>
+            <option value="Babysitter">Babysitter</option>
+        </select>
+
+        <input type="text" id="phone" placeholder="Enter Phone Number">
+
+        <button onclick="addHelper()">Add Profile</button>
+    </div>
+
+    <!-- Search Section -->
+    <div class="box">
+        <h2>Search House Help</h2>
+
+        <input type="text" id="searchCity" placeholder="Search by City">
+
+        <select id="searchService">
+            <option value="">All Services</option>
+            <option value="House Maid">House Maid</option>
+            <option value="Cook">Cook</option>
+            <option value="Babysitter">Babysitter</option>
+        </select>
+
+        <button onclick="searchHelper()">Search</button>
+    </div>
+
+    <!-- Display Profiles -->
+    <div>
+        <h2>Available Helpers</h2>
+        <div id="profileList"></div>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 Helping Hands | Women Employment Support
+</footer>
+
+<script>
+
+    var helpers = [];
+
+    function addHelper() {
+        var name = document.getElementById("name").value;
+        var city = document.getElementById("city").value;
+        var service = document.getElementById("service").value;
+        var phone = document.getElementById("phone").value;
+
+        if(name == "" || city == "" || phone == "") {
+            alert("Please fill all fields");
+            return;
+        }
+
+        var helper = {
+            name: name,
+            city: city,
+            service: service,
+            phone: phone
+        };
+
+        helpers.push(helper);
+        displayHelpers(helpers);
+
+        document.getElementById("name").value = "";
+        document.getElementById("city").value = "";
+        document.getElementById("phone").value = "";
+    }
+
+    function displayHelpers(list) {
+        var output = "";
+
+        if(list.length == 0) {
+            output = "<p>No helpers found.</p>";
+        }
+
+        for(var i = 0; i < list.length; i++) {
+            output += `
+                <div class="card">
+                    <h3>${list[i].name}</h3>
+                    <p><b>City:</b> ${list[i].city}</p>
+                    <p><b>Service:</b> ${list[i].service}</p>
+                    <p><b>Contact:</b> ${list[i].phone}</p>
+                </div>
+            `;
+        }
+
+        document.getElementById("profileList").innerHTML = output;
+    }
+
+    function searchHelper() {
+        var searchCity = document.getElementById("searchCity").value.toLowerCase();
+        var searchService = document.getElementById("searchService").value;
+
+        var filtered = helpers.filter(function(helper) {
+            var cityMatch = helper.city.toLowerCase().includes(searchCity);
+            var serviceMatch = searchService === "" || helper.service === searchService;
+            return cityMatch && serviceMatch;
+        });
+
+        displayHelpers(filtered);
+    }
+
+</script>
+
+</body>
+</html>
